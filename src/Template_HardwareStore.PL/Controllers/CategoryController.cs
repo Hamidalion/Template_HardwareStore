@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Models;
 
@@ -21,6 +18,22 @@ namespace Template_HardwareStore.PL.Controllers
         {
             IEnumerable<Category> objList = _db.Categories;
             return View(objList);
+        }
+
+        // GET - Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST - Create
+        [HttpPost]
+        [ValidateAntiForgeryToken] //токен защиты от взлома
+        public IActionResult Create(Category category)
+        {
+            _db.Categories.Add(category);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
         }
     }
 }

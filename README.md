@@ -19,6 +19,7 @@ Get practice in development MVC asp.net apps.
 5.2.		- 'dotnet ef migrations add Add_Table_Category' create migration
 5.3.		- 'dotnet ef database update'
 6.	Create Category Controller
-7.	Cerate CAtegory View
-8.	
+7.	Crate Category View Index with bootstrap
+8.	Add Category Create Conbtroller
+9.	Add Category Create View
 
