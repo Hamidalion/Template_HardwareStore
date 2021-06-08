@@ -26,14 +26,83 @@ namespace Template_HardwareStore.PL.Controllers
             return View();
         }
 
-        // POST - Create
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
         public IActionResult Create(Category category)
         {
-            _db.Categories.Add(category);
-            _db.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
         }
+
+        // GET - Edit
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var model = _db.Categories.Find(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] //токен защиты от взлома
+        public IActionResult Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Update(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
+        }
+
+        // GET - Delete
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var model = _db.Categories.Find(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken] //токен защиты от взлома
+        [ActionName("Delete")]
+        public IActionResult DeletePost (int? id)
+        {
+            var model = _db.Categories.Find(id);
+            if (ModelState.IsValid && model != null)
+            {
+                _db.Categories.Remove(model);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
     }
 }
