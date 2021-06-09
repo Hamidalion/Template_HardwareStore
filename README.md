@@ -18,7 +18,7 @@ Get practice in development MVC asp.net apps.
 4.	Add service in startup.cs as services.AddDbContext
 5.	Create first Migration: (This method without EF.Tools)
 5.1.		- `dotnet tool install --global dotnet-ef` install cmd tool (if not used before)
-5.2.		- `dotnet ef migrations add Add_Table_Category` create migration
+5.2.		- `dotnet ef migrations add Add_Table_Category`- this is create migration
 5.3.		- `dotnet ef database update`
 6.	Create Category Controller
 7.	Crate Category View Index with bootstrap
@@ -37,11 +37,11 @@ Get practice in development MVC asp.net apps.
 	
 		### Section 3  ###
 
-1.
-2.
-3.
-4.
-5.
-6.
+1.	Create Model Product
+2.	Add DbSet in Context
+3.	Create Migration
+4.	Update Database
+5.	Create Controller Product
+6.	
 
 		
