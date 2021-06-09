@@ -5,18 +5,18 @@ using Template_HardwareStore.PL.Models;
 
 namespace Template_HardwareStore.PL.Controllers
 {
-    public class CategoryController : Controller
+    public class ApplicationTypeController : Controller
     {
         private readonly ApplicationDbContext _db;
 
-        public CategoryController(ApplicationDbContext db)
+        public ApplicationTypeController(ApplicationDbContext db)
         {
             _db = db;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> modelsList = _db.Categories;
+            IEnumerable<ApplicationType> modelsList = _db.ApplicationTypes;
             return View(modelsList);
         }
 
@@ -28,15 +28,15 @@ namespace Template_HardwareStore.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
-        public IActionResult Create(Category category)
+        public IActionResult Create(ApplicationType applicationType)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
+                _db.ApplicationTypes.Add(applicationType);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(category);
+            return View(applicationType);
         }
 
         // GET - Edit
@@ -47,26 +47,26 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.Categories.Find(id);
+            var model = _db.ApplicationTypes.Find(id);
             if (model == null)
             {
                 return NotFound();
             }
-            
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
-        public IActionResult Edit(Category category)
+        public IActionResult Edit(ApplicationType applicationType)
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
+                _db.ApplicationTypes.Update(applicationType);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(category);
+            return View(applicationType);
         }
 
         // GET - Delete
@@ -77,7 +77,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.Categories.Find(id);
+            var model = _db.ApplicationTypes.Find(id);
             if (model == null)
             {
                 return NotFound();
@@ -89,12 +89,12 @@ namespace Template_HardwareStore.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
         [ActionName("Delete")]
-        public IActionResult DeletePost (int? id)
+        public IActionResult DeletePost(int? id)
         {
-            var model = _db.Categories.Find(id);
+            var model = _db.ApplicationTypes.Find(id);
             if (ModelState.IsValid && model != null)
             {
-                _db.Categories.Remove(model);
+                _db.ApplicationTypes.Remove(model);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -103,6 +103,5 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
         }
-
     }
 }

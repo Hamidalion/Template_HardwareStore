@@ -1,8 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Template_HardwareStore.PL.Models;
 
 namespace Template_HardwareStore.PL.Data
@@ -14,5 +10,6 @@ namespace Template_HardwareStore.PL.Data
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ApplicationType> ApplicationTypes { get; set; }
     }
 }
