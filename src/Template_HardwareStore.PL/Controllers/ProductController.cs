@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Models;
+using Template_HardwareStore.PL.Models.ViewModels;
 
 namespace Template_HardwareStore.PL.Controllers
 {
@@ -27,45 +30,51 @@ namespace Template_HardwareStore.PL.Controllers
             return View(modelsList);
         }
 
-        // GET - Create
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken] //токен защиты от взлома
-        public IActionResult Create(Product product)
+        // GET - Upsert
+        public IActionResult Upsert(int? id)
         {
-            if (ModelState.IsValid)
-            {
-                _db.Products.Add(product);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(product);
-        }
+            //IEnumerable<SelectListItem> categoryDropdawn = _db.Categories.Select(c => new SelectListItem
+            //{
+            //    Text = c.Name,
+            //    Value = c.Id.ToString(),
+            //});
 
-        // GET - Edit
-        public IActionResult Edit(int? id)
-        {
+            ////ViewBag.CategoryDropdawn = categoryDropdawn;
+            //ViewData["CategoryDropdawn"] = categoryDropdawn;
+
+            //Product product = new Product();
+
+            ProductViewModel productViewModel = new ProductViewModel() {
+                Product = new Product(),
+                CategorySelectListItem = _db.Categories.Select(c => new SelectListItem
+                    {
+                        Text = c.Name,
+                        Value = c.Id.ToString(),
+                    })
+            };   
+
             if (id == null || id == 0)
             {
-                return NotFound();
+                return View(productViewModel);
             }
-
-            var model = _db.Products.Find(id);
-            if (model == null)
+            else
             {
-                return NotFound();
+                productViewModel.Product = _db.Products.Find(id);
+                if (productViewModel.Product == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(productViewModel);
+                }
             }
-            
-            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
-        public IActionResult Edit(Product product)
+        public IActionResult Upsert(Product product)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +105,7 @@ namespace Template_HardwareStore.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
         [ActionName("Delete")]
-        public IActionResult DeletePost (int? id)
+        public IActionResult DeletePost(int? id)
         {
             var model = _db.Products.Find(id);
             if (ModelState.IsValid && model != null)

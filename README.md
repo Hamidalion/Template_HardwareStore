@@ -42,6 +42,7 @@ Get practice in development MVC asp.net apps.
 3.	Create Migration
 4.	Update Database
 5.	Create Controller Product
-6.	
-
+6.	Create Index action
+7. 	Create Upsert action (it's a bad practice)
+8.	
 		
