@@ -1,21 +1,27 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using Template_HardwareStore.PL.Data;
+using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Models;
 using Template_HardwareStore.PL.Models.ViewModels;
+using System;
+using System.IO;
 
 namespace Template_HardwareStore.PL.Controllers
 {
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db)
+        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
         {
             _db = db;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
@@ -74,15 +80,41 @@ namespace Template_HardwareStore.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
-        public IActionResult Upsert(Product product)
+        public IActionResult Upsert(ProductViewModel productViewModel)
         {
             if (ModelState.IsValid)
             {
-                _db.Products.Update(product);
+                var files = HttpContext.Request.Form.Files;
+
+                string webRootPath = _webHostEnvironment.WebRootPath;
+
+                if (productViewModel.Product.Id == 0)
+                {
+                    string upload = webRootPath + WebConstants.IamgePath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extansion = Path.GetExtension(files[0].FileName);
+
+                    using (var fileStream = new FileStream(Path.Combine(upload, fileName+extansion), FileMode.Create))
+                    {
+                        files[0].CopyTo(fileStream);
+                    }
+
+                    productViewModel.Product.Image = fileName + extansion;
+
+                    _db.Products.Add(productViewModel.Product);
+                    
+                }
+                else
+                {
+
+                }
+
                 _db.SaveChanges();
+                _db.Dispose();
+
                 return RedirectToAction("Index");
             }
-            return View(product);
+            return View(productViewModel);
         }
 
         // GET - Delete
