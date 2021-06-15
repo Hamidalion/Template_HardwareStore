@@ -47,6 +47,8 @@ Get practice in development MVC asp.net apps.
 8.	Create ViewModel/ and use there split model
 9.  Create Constants/WebConstants.cs
 10.	In Upsert action create two action for creating and update
+11.	Create action Delete
+12. Create view Delete
 
 
 		

@@ -140,6 +140,13 @@ namespace Template_HardwareStore.PL.Controllers
 
                 return RedirectToAction("Index");
             }
+
+            productViewModel.CategorySelectListItem = _db.Categories.Select(c => new SelectListItem
+            {
+                Text = c.Name,
+                Value = c.Id.ToString(),
+            }); 
+
             return View(productViewModel);
         }
 
@@ -151,13 +158,16 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.Products.Find(id);
-            if (model == null)
+            var productModel = _db.Products.Include(c => c.Category).FirstOrDefault(p=>p.Id == id); //egger loading
+            
+            //productModel.Category = _db.Categories.Find(productModel.CategoryId);
+
+            if (productModel == null)
             {
                 return NotFound();
             }
 
-            return View(model);
+            return View(productModel);
         }
 
         [HttpPost]
@@ -168,6 +178,15 @@ namespace Template_HardwareStore.PL.Controllers
             var model = _db.Products.Find(id);
             if (ModelState.IsValid && model != null)
             {
+                string upload = _webHostEnvironment.WebRootPath + WebConstants.IamgePath; ;
+                string fileName = model.Image;
+
+                var file = Path.Combine(upload, fileName);
+                if (System.IO.File.Exists(file))
+                {
+                    System.IO.File.Delete(file);
+                }
+
                 _db.Products.Remove(model);
                 _db.SaveChanges();
                 return RedirectToAction("Index");
