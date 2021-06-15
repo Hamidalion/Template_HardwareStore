@@ -44,5 +44,9 @@ Get practice in development MVC asp.net apps.
 5.	Create Controller Product
 6.	Create Index action
 7. 	Create Upsert action (it's a bad practice)
-8.	
+8.	Create ViewModel/ and use there split model
+9.  Create Constants/WebConstants.cs
+10.	In Upsert action create two action for creating and update
+
+
 		

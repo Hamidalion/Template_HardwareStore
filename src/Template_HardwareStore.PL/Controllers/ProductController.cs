@@ -40,6 +40,7 @@ namespace Template_HardwareStore.PL.Controllers
         // GET - Upsert
         public IActionResult Upsert(int? id)
         {
+            #region Example using ViewBag and ViewData
             //IEnumerable<SelectListItem> categoryDropdawn = _db.Categories.Select(c => new SelectListItem
             //{
             //    Text = c.Name,
@@ -50,6 +51,7 @@ namespace Template_HardwareStore.PL.Controllers
             //ViewData["CategoryDropdawn"] = categoryDropdawn;
 
             //Product product = new Product();
+            #endregion
 
             ProductViewModel productViewModel = new ProductViewModel() {
                 Product = new Product(),
@@ -87,12 +89,13 @@ namespace Template_HardwareStore.PL.Controllers
                 var files = HttpContext.Request.Form.Files;
 
                 string webRootPath = _webHostEnvironment.WebRootPath;
+                string upload = webRootPath + WebConstants.IamgePath;
+                string fileName = Guid.NewGuid().ToString();
+                string extansion = Path.GetExtension(files[0].FileName);
 
                 if (productViewModel.Product.Id == 0)
                 {
-                    string upload = webRootPath + WebConstants.IamgePath;
-                    string fileName = Guid.NewGuid().ToString();
-                    string extansion = Path.GetExtension(files[0].FileName);
+                    // Creat Product
 
                     using (var fileStream = new FileStream(Path.Combine(upload, fileName+extansion), FileMode.Create))
                     {
@@ -102,11 +105,34 @@ namespace Template_HardwareStore.PL.Controllers
                     productViewModel.Product.Image = fileName + extansion;
 
                     _db.Products.Add(productViewModel.Product);
-                    
                 }
                 else
                 {
+                    // Edit Product
 
+                    var productModel = _db.Products.AsNoTracking().FirstOrDefault(p => p.Id == productViewModel.Product.Id);
+
+                    if (files.Count>0)
+                    {
+                        var oldFile = Path.Combine(upload, productModel.Image);
+                        if (System.IO.File.Exists(oldFile))
+                        {
+                            System.IO.File.Delete(oldFile);
+                        }
+
+                        using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
+                        {
+                            files[0].CopyTo(fileStream);
+                        }
+
+                        productViewModel.Product.Image = fileName + extansion;
+                    }
+                    else
+                    {
+                        productViewModel.Product.Image = productModel.Image;
+                    }
+
+                    _db.Products.Update(productViewModel.Product);
                 }
 
                 _db.SaveChanges();
