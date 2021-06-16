@@ -26,13 +26,13 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> modelsList = _db.Products;
+            IEnumerable<Product> modelsList = _db.Products.Include(u=>u.Category).Include(u=>u.ApplicationType);
 
-            foreach (var item in modelsList)
-            {
-                item.Category = _db.Categories.FirstOrDefault(c => c.Id == item.CategoryId);
-                item.ApplicationType = _db.ApplicationTypes.FirstOrDefault(a => a.Id == item.ApplicationTypeId);
-            }
+            //foreach (var item in modelsList)
+            //{
+            //    item.Category = _db.Categories.FirstOrDefault(c => c.Id == item.CategoryId);
+            //    item.ApplicationType = _db.ApplicationTypes.FirstOrDefault(a => a.Id == item.ApplicationTypeId);
+            //}
 
             return View(modelsList);
         }

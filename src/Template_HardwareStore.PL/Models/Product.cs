@@ -12,6 +12,8 @@ namespace Template_HardwareStore.PL.Models
         [Required]
         public string Name { get; set; }
 
+        public string ShortDesc { get; set; }
+
         public string Description { get; set; }
 
         [Required]
