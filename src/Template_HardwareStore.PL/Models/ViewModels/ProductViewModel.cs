@@ -8,5 +8,7 @@ namespace Template_HardwareStore.PL.Models.ViewModels
         public Product Product { get; set; }
 
         public IEnumerable<SelectListItem> CategorySelectListItem { get; set; }
+
+        public IEnumerable<SelectListItem> ApplicationTypeSelectListItem { get; set; }
     }
 }

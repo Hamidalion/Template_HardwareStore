@@ -30,7 +30,8 @@ namespace Template_HardwareStore.PL.Controllers
 
             foreach (var item in modelsList)
             {
-                item.Category = _db.Categories.FirstOrDefault(i => i.Id == item.CategoryId);
+                item.Category = _db.Categories.FirstOrDefault(c => c.Id == item.CategoryId);
+                item.ApplicationType = _db.ApplicationTypes.FirstOrDefault(a => a.Id == item.ApplicationTypeId);
             }
 
             return View(modelsList);
@@ -59,7 +60,14 @@ namespace Template_HardwareStore.PL.Controllers
                     {
                         Text = c.Name,
                         Value = c.Id.ToString(),
-                    })
+                    }),
+
+                ApplicationTypeSelectListItem = _db.ApplicationTypes.Select(a => new SelectListItem
+                {
+                    Text = a.Name,
+                    Value = a.Id.ToString(),
+                })
+
             };   
 
             if (id == null || id == 0)
@@ -145,7 +153,13 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 Text = c.Name,
                 Value = c.Id.ToString(),
-            }); 
+            });
+
+            productViewModel.ApplicationTypeSelectListItem = _db.ApplicationTypes.Select(a => new SelectListItem
+            {
+                Text = a.Name,
+                Value = a.Id.ToString(),
+            });
 
             return View(productViewModel);
         }
@@ -158,7 +172,9 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var productModel = _db.Products.Include(c => c.Category).FirstOrDefault(p=>p.Id == id); //egger loading
+            var productModel = _db.Products.Include(c => c.Category)
+                                           .Include(c => c.ApplicationType)
+                                           .FirstOrDefault(c => c.Id == id); //egger loading
             
             //productModel.Category = _db.Categories.Find(productModel.CategoryId);
 

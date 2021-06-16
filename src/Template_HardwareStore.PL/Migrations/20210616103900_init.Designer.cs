@@ -9,8 +9,8 @@ using Template_HardwareStore.PL.Data;
 namespace Template_HardwareStore.PL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210609101518_Init")]
-    partial class Init
+    [Migration("20210616103900_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -62,6 +62,9 @@ namespace Template_HardwareStore.PL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ApplicationTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
@@ -80,6 +83,8 @@ namespace Template_HardwareStore.PL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationTypeId");
+
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
@@ -87,11 +92,19 @@ namespace Template_HardwareStore.PL.Migrations
 
             modelBuilder.Entity("Template_HardwareStore.PL.Models.Product", b =>
                 {
+                    b.HasOne("Template_HardwareStore.PL.Models.ApplicationType", "ApplicationType")
+                        .WithMany()
+                        .HasForeignKey("ApplicationTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Template_HardwareStore.PL.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ApplicationType");
 
                     b.Navigation("Category");
                 });
