@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using Template_HardwareStore.PL.Data;
 
 namespace Template_HardwareStore.PL
@@ -22,6 +23,15 @@ namespace Template_HardwareStore.PL
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddHttpContextAccessor(); //для доступа к HTTPContext
+
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromMinutes(10);
+                option.Cookie.HttpOnly = true; //доступны ли куки только при передаче через HTTP-запрос
+                option.Cookie.IsEssential = true; //при значении true указывает, что куки критичны и необходимы для работы этого приложения
+            });
 
             services.AddControllersWithViews();
         }
@@ -46,6 +56,8 @@ namespace Template_HardwareStore.PL
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

@@ -26,7 +26,7 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> modelsList = _db.Products.Include(u=>u.Category).Include(u=>u.ApplicationType);
+            IEnumerable<Product> modelsList = _db.Products.Include(u => u.Category).Include(u => u.ApplicationType);
 
             //foreach (var item in modelsList)
             //{
@@ -54,13 +54,14 @@ namespace Template_HardwareStore.PL.Controllers
             //Product product = new Product();
             #endregion
 
-            ProductViewModel productViewModel = new ProductViewModel() {
+            ProductViewModel productViewModel = new ProductViewModel()
+            {
                 Product = new Product(),
                 CategorySelectListItem = _db.Categories.Select(c => new SelectListItem
-                    {
-                        Text = c.Name,
-                        Value = c.Id.ToString(),
-                    }),
+                {
+                    Text = c.Name,
+                    Value = c.Id.ToString(),
+                }),
 
                 ApplicationTypeSelectListItem = _db.ApplicationTypes.Select(a => new SelectListItem
                 {
@@ -68,7 +69,7 @@ namespace Template_HardwareStore.PL.Controllers
                     Value = a.Id.ToString(),
                 })
 
-            };   
+            };
 
             if (id == null || id == 0)
             {
@@ -105,7 +106,7 @@ namespace Template_HardwareStore.PL.Controllers
                 {
                     // Creat Product
 
-                    using (var fileStream = new FileStream(Path.Combine(upload, fileName+extansion), FileMode.Create))
+                    using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
                     {
                         files[0].CopyTo(fileStream);
                     }
@@ -120,7 +121,7 @@ namespace Template_HardwareStore.PL.Controllers
 
                     var productModel = _db.Products.AsNoTracking().FirstOrDefault(p => p.Id == productViewModel.Product.Id);
 
-                    if (files.Count>0)
+                    if (files.Count > 0)
                     {
                         var oldFile = Path.Combine(upload, productModel.Image);
                         if (System.IO.File.Exists(oldFile))
@@ -175,7 +176,7 @@ namespace Template_HardwareStore.PL.Controllers
             var productModel = _db.Products.Include(c => c.Category)
                                            .Include(c => c.ApplicationType)
                                            .FirstOrDefault(c => c.Id == id); //egger loading
-            
+
             //productModel.Category = _db.Categories.Find(productModel.CategoryId);
 
             if (productModel == null)
@@ -212,6 +213,5 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
         }
-
     }
 }

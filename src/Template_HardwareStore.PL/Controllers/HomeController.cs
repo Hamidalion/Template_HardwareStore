@@ -43,5 +43,18 @@ namespace Template_HardwareStore.PL.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Details(int id)
+        {
+            DetailViewModel detailViewModel = new DetailViewModel()
+            {
+                Product = _db.Products.Include(u => u.Category)
+                                      .Include(u => u.ApplicationType)
+                                      .Where(u => u.Id == id)
+                                      .FirstOrDefault(),
+                ExistInCart = false,
+            };
+            return View(detailViewModel);
+        }
     }
 }

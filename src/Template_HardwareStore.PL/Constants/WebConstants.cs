@@ -3,5 +3,7 @@
     public static class WebConstants
     {
         public static string IamgePath = @"\img\products\";
+
+        public static string SessionCart = "ShopingCartSession";
     }
 }
