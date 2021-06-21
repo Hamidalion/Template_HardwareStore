@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Data;
+using Template_HardwareStore.PL.Extensions;
 using Template_HardwareStore.PL.Models;
 using Template_HardwareStore.PL.Models.ViewModels;
 
@@ -55,6 +57,22 @@ namespace Template_HardwareStore.PL.Controllers
                 ExistInCart = false,
             };
             return View(detailViewModel);
+        }
+
+        [HttpPost, ActionName("AddToCart")]
+        public IActionResult DetailsPost(int id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
+                HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
+            };
+            shoppingCartList.Add(new ShoppingCart { ProductId = id });
+
+            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }
