@@ -47,14 +47,16 @@
                         <div class="col-12 col-md-6 ">
                             @if (Model.ExistInCart)
                             {
-                                <a asp-action="RremoveFromCart" asp-route-id="@Model.Product.Id" 
-                                        class="btn btn-warning btn-square form-control btn-lg" style="height:50px;"></a>
+                             <a asp-action="RremoveFromCart" asp-route-id="@Model.Product.Id"
+                                  class="btn btn-danger form-control btn-lg" style="height:50px;">
+                                  Delete from cart &nbsp;
+                                  <i class="fas fa-minus"></i>
+                             </a>
                             }
                             else
                             {
-                                <button asp-action="AddToCart" asp-route-id="@Model.Product.Id type="submit" class="btn btn-success form-control btn-lg" style="height:50px;">Add to Cart</button>
+                                  <button asp-action="AddToCart" asp-route-id="@Model.Product.Id" type="submit" class="btn btn-success form-control btn-lg" style="height:50px;">Add to Cart</button>
                             }
-
 
                         </div>
                     </div>

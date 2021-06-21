@@ -63,3 +63,4 @@ Get practice in development MVC asp.net apps.
 7.		Add new model ShoppingCart
 8. 		Set new variable in WebConstants
 9. 		Use FontAverson and part of functions our Session
+10. 	Add functions session in Home controller action Details

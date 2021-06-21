@@ -48,6 +48,13 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Details(int id)
         {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
+                HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
+            };
+
             DetailViewModel detailViewModel = new DetailViewModel()
             {
                 Product = _db.Products.Include(u => u.Category)
@@ -56,6 +63,15 @@ namespace Template_HardwareStore.PL.Controllers
                                       .FirstOrDefault(),
                 ExistInCart = false,
             };
+
+            foreach (var item in shoppingCartList)
+            {
+                if (item.ProductId == id)
+                {
+                    detailViewModel.ExistInCart = true;
+                }
+            }
+
             return View(detailViewModel);
         }
 
@@ -69,6 +85,26 @@ namespace Template_HardwareStore.PL.Controllers
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
             };
             shoppingCartList.Add(new ShoppingCart { ProductId = id });
+
+            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult RremoveFromCart(int id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
+                HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
+            };
+
+            var itemToRemove = shoppingCartList.SingleOrDefault(u => u.ProductId == id);
+            if (itemToRemove != null)
+            {
+                shoppingCartList.Remove(itemToRemove);
+            }
 
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
 
