@@ -50,7 +50,7 @@ Get practice in development MVC asp.net apps.
 11.		Create action Delete
 12. 	Create view Delete
 
-			### Section 5  ###
+			### Section 5 (Include settings of UI) ###
 		
 1.		Change Nav bashboard
 2.		Make new Home Index page
@@ -64,3 +64,17 @@ Get practice in development MVC asp.net apps.
 8. 		Set new variable in WebConstants
 9. 		Use FontAverson and part of functions our Session
 10. 	Add functions session in Home controller action Details
+11. 	Add action RremoveFromCart to Remove cart from list
+
+			### Section 6 (Setting Identity system) ###
+		
+1.		Add NugetPacket Microsoft Identity Core
+2.		Add inheritance IdentityDbContext
+3.		Add Microsoft.AspNetCore.Identity.UI   
+4.		Set settings in startup.sc
+5.		Create new migration
+6.  	Update Database
+7.		Add new scaffolded Item as Identity 
+8.		Create auto razerpages to register & login
+9. 		To plug _IdentityPartialview to Layout
+10. 	
