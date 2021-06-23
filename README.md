@@ -77,4 +77,12 @@ Get practice in development MVC asp.net apps.
 7.		Add new scaffolded Item as Identity 
 8.		Create auto razerpages to register & login
 9. 		To plug _IdentityPartialview to Layout
-10. 	
+10. 	Add new model ApplicationUser and inheritance from IdentityUser
+11.		Create new migration
+12.		Update Database
+13.		Change Razor pages register.cshtml IdentityUser to ApplicationUser
+14. 	Add UserRole in register.cshtml and set this in GET request
+15. 	Add UserRole in DI container
+16.		Set logic to create Admin only Admin
+17.		Change UI RolePages
+
