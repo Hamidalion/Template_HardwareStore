@@ -7,8 +7,7 @@ This repository was created as a repository for performing some of the learning 
 Get practice in development MVC asp.net apps.
 
 ### Section 1 - Introduction.
-1.Create solution cmd:\ dotnet new sln
-
+1. -Create solution cmd:\ dotnet new sln.
 2.Create ASP.NET MVC project
 
 ### Section 2 - Database setup and Category management.
