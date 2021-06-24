@@ -88,3 +88,6 @@ Get practice in development MVC asp.net apps.
 
 ### Section 7 
 
+1. Add controller for basket (CartController)
+2. Add view Cart
+3. 

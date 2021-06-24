@@ -91,7 +91,7 @@ namespace Template_HardwareStore.PL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult RremoveFromCart(int id)
+        public IActionResult RemoveFromCart(int id)
         {
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
