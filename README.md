@@ -3,14 +3,14 @@
 ## Acquaintance
 This repository was created as a repository for performing some of the learning tasks of the Udemy course.
 
-			##### Purpose
+##### Purpose
 Get practice in development MVC asp.net apps.
 
-			### Section 1 - Introduction.
+### Section 1 - Introduction.
 1.		Create solution cmd:\ dotnet new sln
 2.		Create ASP.NET MVC project
 
-			### Section 2 - Database setup and Category management.
+### Section 2 - Database setup and Category management.
 
 1.		Create new Model Category
 2.		Cerate ConnectionStrings in appsetting.json
@@ -23,7 +23,7 @@ Get practice in development MVC asp.net apps.
 6.		Create Category Controller
 7.		Crate Category View Index with bootstrap
 
-			### Section 3
+### Section 3
 
 1.		Add Category action Create in Controller
 2.		Add Category Create View
@@ -35,7 +35,7 @@ Get practice in development MVC asp.net apps.
 6.		Add Category action Delete in Controller
 7.		Add Category Delete View
 	
-			### Section 4
+### Section 4
 
 1.		Create Model Product
 2.		Add DbSet in Context
@@ -50,7 +50,7 @@ Get practice in development MVC asp.net apps.
 11.		Create action Delete
 12. 	Create view Delete
 
-			### Section 5 (Include settings of UI)
+### Section 5 (Include settings of UI)
 		
 1.		Change Nav bashboard
 2.		Make new Home Index page
@@ -66,7 +66,7 @@ Get practice in development MVC asp.net apps.
 10. 	Add functions session in Home controller action Details
 11. 	Add action RremoveFromCart to Remove cart from list
 
-			### Section 6 (Setting Identity system)
+### Section 6 (Setting Identity system)
 		
 1.		Add NugetPacket Microsoft Identity Core
 2.		Add inheritance IdentityDbContext
@@ -86,8 +86,8 @@ Get practice in development MVC asp.net apps.
 16.		Set logic to create Admin only Admin
 17.		Change UI RolePages
 
-			### Section 5 (Include settings of UI)
-		
+### Section 7 
+
 Название файла  | Содержание файла
 ----------------|----------------------
 style.css       | Пустой файл каскадной таблицы стилей, в который производится сбока необходимых стилей
