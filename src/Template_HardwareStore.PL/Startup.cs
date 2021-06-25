@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Template_HardwareStore.PL.Data;
+using Template_HardwareStore.PL.Utility;
 
 namespace Template_HardwareStore.PL
 {
@@ -30,6 +32,8 @@ namespace Template_HardwareStore.PL
                 .AddEntityFrameworkStores<ApplicationDbContext>(); // настройка добовление таблиц юсера
 
             services.AddHttpContextAccessor(); //для доступа к HTTPContext
+
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddSession(option =>
             {

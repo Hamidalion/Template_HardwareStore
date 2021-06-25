@@ -13,7 +13,7 @@ Get practice in development MVC asp.net apps.
 ### Section 2 - Database setup and Category management.
 
 1. Create new Model Category
-2. Cerate ConnectionStrings in appsetting.json
+2. Create ConnectionStrings in appsetting.json
 3. Add ApplicationContext: Add NuGet-packets SQLServer, EFCore
 4. Add service in startup.cs as services.AddDbContext
 5. Create first Migration: (This method without EF.Tools)
@@ -90,4 +90,10 @@ Get practice in development MVC asp.net apps.
 
 1. Add controller for basket (CartController)
 2. Add view Cart
-3. 
+3. CartController - Autorise
+4. Create ProductUserViewModel
+5. Create Action IndexPost and Summary
+6. Create view Summory
+7. Register in Mailjet.Api
+8. Create Utility/EmailSender/
+9. 
