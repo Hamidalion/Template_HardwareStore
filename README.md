@@ -94,6 +94,6 @@ Get practice in development MVC asp.net apps.
 4. Create ProductUserViewModel
 5. Create Action IndexPost and Summary
 6. Create view Summory
-7. Register in Mailjet.Api
+7. Register in Mailjet.Api (Be attansion! I used old worker version 1.2.2)
 8. Create Utility/EmailSender/
-9. 
+9. Try to send email
