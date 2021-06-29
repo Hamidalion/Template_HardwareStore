@@ -36,6 +36,8 @@ namespace Template_HardwareStore.PL
 
             services.AddTransient<IEmailSender, EmailSender>();
 
+            
+
             services.AddSession(option =>
             {
                 option.IdleTimeout = TimeSpan.FromMinutes(10);

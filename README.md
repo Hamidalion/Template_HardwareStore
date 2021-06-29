@@ -97,3 +97,5 @@ Get practice in development MVC asp.net apps.
 7. Register in Mailjet.Api (Be attansion! I used old worker version 1.2.2)
 8. Create Utility/EmailSender/
 9. Try to send email
+10. Use Configuration by appsettings.json
+11. Add wwwroot/templates/Inquary.html

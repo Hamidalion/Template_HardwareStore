@@ -10,9 +10,11 @@ using Template_HardwareStore.PL.Models;
 using Template_HardwareStore.PL.Models.ViewModels;
 using System;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Template_HardwareStore.PL.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _db;

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
+using Template_HardwareStore.PL.Constants;
 
 namespace Template_HardwareStore.PL.Utility
 {
@@ -35,7 +36,7 @@ namespace Template_HardwareStore.PL.Utility
                 .Property(Send.Messages, new JArray {
                     new JObject {
                         {"From",new JObject {
-                                    {"Email", "Hamidalion@protonmail.com"},
+                                    {"Email", WebConstants.EmailAdmin},
                                     {"Name", "HardWareStore"}}},
                         {"To",new JArray {new JObject {
                                     {"Email", $"{email}"},

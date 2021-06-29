@@ -12,7 +12,7 @@ namespace Template_HardwareStore.PL.Models.ViewModels
             ProductList = new List<Product>();
         }
 
-        public IEnumerable<Product> ProductList { get; set; }
+        public IList<Product> ProductList { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
     }

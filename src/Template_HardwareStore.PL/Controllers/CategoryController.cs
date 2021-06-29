@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Models;
 
 namespace Template_HardwareStore.PL.Controllers
 {
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
