@@ -26,6 +26,7 @@ namespace Template_HardwareStore.PL
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddDefaultTokenProviders() // получение токенов если пороль утерян
                 .AddDefaultUI() // используется для страниц Identity
