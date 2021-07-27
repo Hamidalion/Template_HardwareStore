@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Template_HardwareStore.PL.Data;
-using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Models;
 using Template_HardwareStore.PL.Models.ViewModels;
-using System;
-using System.IO;
-using Microsoft.AspNetCore.Authorization;
+using Template_HardwareStore.Utility.Constants;
 
 namespace Template_HardwareStore.PL.Controllers
 {

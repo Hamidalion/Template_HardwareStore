@@ -9,11 +9,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Extensions;
 using Template_HardwareStore.PL.Models;
 using Template_HardwareStore.PL.Models.ViewModels;
+using Template_HardwareStore.Utility.Constants;
 
 namespace Template_HardwareStore.PL.Controllers
 {
@@ -28,7 +28,7 @@ namespace Template_HardwareStore.PL.Controllers
         public ProductUserViewModel ProductUserViewModel { get; set; }
 
 
-        public CartController(ApplicationDbContext db, 
+        public CartController(ApplicationDbContext db,
                               IWebHostEnvironment webHostEnvironment,
                               IEmailSender emailSender)
         {

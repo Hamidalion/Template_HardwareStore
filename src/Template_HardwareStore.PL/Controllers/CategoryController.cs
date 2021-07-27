@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Template_HardwareStore.PL.Constants;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Models;
+using Template_HardwareStore.Utility.Constants;
 
 namespace Template_HardwareStore.PL.Controllers
 {
@@ -55,7 +55,7 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(model);
         }
 
@@ -92,7 +92,7 @@ namespace Template_HardwareStore.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken] //токен защиты от взлома
         [ActionName("Delete")]
-        public IActionResult DeletePost (int? id)
+        public IActionResult DeletePost(int? id)
         {
             var model = _db.Categories.Find(id);
             if (ModelState.IsValid && model != null)

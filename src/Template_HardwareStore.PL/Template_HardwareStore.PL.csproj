@@ -28,4 +28,8 @@
     <Folder Include="wwwroot\img\products\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Template_HardwareStore.Utility\Template_HardwareStore.Utility.csproj" />
+  </ItemGroup>
+
 </Project>

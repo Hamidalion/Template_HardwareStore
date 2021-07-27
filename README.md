@@ -99,3 +99,9 @@ Get practice in development MVC asp.net apps.
 9. Try to send email
 10. Use Configuration by appsettings.json
 11. Add wwwroot/templates/Inquary.html
+12. Create action SummaryPost
+13. Create SummaryInquary view 
+14. Use in Summary view `for` instead of the `foreach` and hidden item.Id and item.name
+15.	Render Inquiry.html and insert item
+16. Add send logic
+17. 

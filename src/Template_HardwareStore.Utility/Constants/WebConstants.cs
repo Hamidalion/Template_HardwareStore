@@ -1,4 +1,4 @@
-﻿namespace Template_HardwareStore.PL.Constants
+﻿namespace Template_HardwareStore.Utility.Constants
 {
     public static class WebConstants
     {

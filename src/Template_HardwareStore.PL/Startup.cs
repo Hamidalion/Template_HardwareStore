@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Template_HardwareStore.PL.Data;
-using Template_HardwareStore.PL.Utility;
+using Template_HardwareStore.Utility.MailSender;
 
 namespace Template_HardwareStore.PL
 {

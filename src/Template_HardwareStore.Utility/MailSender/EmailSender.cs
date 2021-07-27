@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Threading.Tasks;
-using Template_HardwareStore.PL.Constants;
+using Template_HardwareStore.Utility.Constants;
 
-namespace Template_HardwareStore.PL.Utility
+namespace Template_HardwareStore.Utility.MailSender
 {
     public class EmailSender : IEmailSender
     {
@@ -28,12 +28,12 @@ namespace Template_HardwareStore.PL.Utility
         {
             _mailJetSettings = _configuration.GetSection("MailJet").Get<MailJetSettings>();
 
-            MailjetClient client = new MailjetClient(_mailJetSettings.ApiKey, _mailJetSettings.SecretKey){ Version = ApiVersion.V3_1, };
-             MailjetRequest request = new MailjetRequest
-             {
-                 Resource = Send.Resource,
-             }
-                .Property(Send.Messages, new JArray {
+            MailjetClient client = new MailjetClient(_mailJetSettings.ApiKey, _mailJetSettings.SecretKey) { Version = ApiVersion.V3_1, };
+            MailjetRequest request = new MailjetRequest
+            {
+                Resource = Send.Resource,
+            }
+               .Property(Send.Messages, new JArray {
                     new JObject {
                         {"From",new JObject {
                                     {"Email", WebConstants.EmailAdmin},
@@ -42,7 +42,7 @@ namespace Template_HardwareStore.PL.Utility
                                     {"Email", $"{email}"},
                                     {"Name", "Илья"}}}},
                         {"Subject","Greetings from Mailjet."},
-                        {"TextPart", "Used MailJet"}, 
+                        {"TextPart", "Used MailJet"},
                         {"HTMLPart", $"{body}"},
                         {"CustomID", "AppGettingStartedTest"}}});
 
