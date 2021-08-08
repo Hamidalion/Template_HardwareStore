@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Template_HardwareStore.Entities.Models;
 
-namespace Template_HardwareStore.PL.Data
+namespace Template_HardwareStore.DAL.Context
 {
     public class ApplicationDbContext : IdentityDbContext
     {

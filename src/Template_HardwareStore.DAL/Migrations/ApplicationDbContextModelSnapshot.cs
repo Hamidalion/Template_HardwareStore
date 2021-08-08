@@ -3,8 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Template_HardwareStore.PL.Data;
+using Template_HardwareStore.DAL.Context;
 
 namespace Template_HardwareStore.PL.Migrations
 {

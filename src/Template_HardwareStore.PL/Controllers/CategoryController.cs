@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Utility.Constants;
+using Template_HardwareStore.DAL.Context;
 
 namespace Template_HardwareStore.PL.Controllers
 {
