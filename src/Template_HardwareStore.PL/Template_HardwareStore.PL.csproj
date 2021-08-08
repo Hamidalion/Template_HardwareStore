@@ -6,9 +6,9 @@
     <UserSecretsId>a03f6973-0ea7-49a2-a151-30327785f5df</UserSecretsId>
   </PropertyGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <None Remove="Startup.cs~RF6b1451b.TMP" />
-  </ItemGroup>
+  </ItemGroup>-->
 
   <ItemGroup>
     <PackageReference Include="Mailjet.Api" Version="1.2.2" />
@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Template_HardwareStore.Entities\Template_HardwareStore.Entities.csproj" />
     <ProjectReference Include="..\Template_HardwareStore.Utility\Template_HardwareStore.Utility.csproj" />
   </ItemGroup>
 

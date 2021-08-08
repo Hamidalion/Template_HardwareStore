@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Template_HardwareStore.PL.Models;
+using Template_HardwareStore.Entities.Models;
 
 namespace Template_HardwareStore.PL.Data
 {

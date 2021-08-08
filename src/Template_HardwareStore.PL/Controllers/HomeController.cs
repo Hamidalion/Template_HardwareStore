@@ -6,8 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using Template_HardwareStore.PL.Data;
 using Template_HardwareStore.PL.Extensions;
-using Template_HardwareStore.PL.Models;
-using Template_HardwareStore.PL.Models.ViewModels;
+using Template_HardwareStore.Entities.Models;
+using Template_HardwareStore.Entities.Models.ViewModels;
 using Template_HardwareStore.Utility.Constants;
 
 namespace Template_HardwareStore.PL.Controllers

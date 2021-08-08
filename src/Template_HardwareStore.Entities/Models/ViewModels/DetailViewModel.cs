@@ -1,4 +1,4 @@
-﻿namespace Template_HardwareStore.PL.Models.ViewModels
+﻿namespace Template_HardwareStore.Entities.Models.ViewModels
 {
     public class DetailViewModel
     {

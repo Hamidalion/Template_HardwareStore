@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Template_HardwareStore.PL.Models
+namespace Template_HardwareStore.Entities.Models
 {
     public class Product
     {

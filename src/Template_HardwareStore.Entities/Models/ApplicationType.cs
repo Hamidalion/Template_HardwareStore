@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Template_HardwareStore.PL.Models
+namespace Template_HardwareStore.Entities.Models
 {
     public class ApplicationType
     {

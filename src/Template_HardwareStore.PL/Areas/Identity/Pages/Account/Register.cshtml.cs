@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Template_HardwareStore.PL.Models;
+using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Utility.Constants;
 
 namespace Template_HardwareStore.PL.Areas.Identity.Pages.Account
