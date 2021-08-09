@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
-namespace Template_HardwareStore.PL.Extensions
+namespace Template_HardwareStore.Utility.Extensions
 {
     public static class SessionExtension
     {
