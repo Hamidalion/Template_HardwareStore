@@ -17,9 +17,11 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Template_HardwareStore.PL</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/img/tile.png" width="40%" />
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,7 +33,7 @@
                     <ul class="navbar-nav flex-grow-1">
 
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home </a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home </a>
                         </li>
 
                         @if (User.IsInRole(WebConstants.AdminRole))
@@ -41,11 +43,11 @@
                                     Content Management
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Types</a>
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Poducts</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Index">Categories</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="ApplicationType" asp-action="Index">Application Types</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Product" asp-action="Index">Poducts</a>
                                     <hr class="dropdown-divider">
-                                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Create new Admin </a>
+                                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create new Admin </a>
                                 </div>
                             </li>
                         }
@@ -77,9 +79,9 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Template_HardwareStore.PL - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer bg-dark">
+        <div class="container text-center text-white-50">
+            &copy; 2021 - Template_HardwareStore - created by Ilay Kozlov <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>

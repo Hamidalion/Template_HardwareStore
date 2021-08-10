@@ -120,3 +120,4 @@ Get practice in development MVC asp.net apps.
 				- [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
 				- [Syncfusion](https://ej2.syncfusion.com/aspnetcore/Grid/GridOverview#/material)
 				- [Datatables](https://datatables.net/)
+17. - 18. Setup settings of bootstrap.
