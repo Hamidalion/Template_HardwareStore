@@ -6,11 +6,13 @@ This repository was created as a repository for performing some of the learning 
 ##### Purpose
 Get practice in development MVC asp.net apps.
 
-### Section 1 - Introduction.
+#### ChAPTER 1 
+
+### Section 1.1 - Introduction.
 1. Create solution cmd:\ dotnet new sln
 2. Create ASP.NET MVC project
 
-### Section 2 - Database setup and Category management.
+### Section 1.2 - Database setup and Category management.
 
 1. Create new Model Category
 2. Create ConnectionStrings in appsetting.json
@@ -23,7 +25,7 @@ Get practice in development MVC asp.net apps.
 6. Create Category Controller
 7. Crate Category View Index with bootstrap
 
-### Section 3
+### Section 1.3
 
 1. Add Category action Create in Controller
 2. Add Category Create View
@@ -35,7 +37,7 @@ Get practice in development MVC asp.net apps.
 6. Add Category action Delete in Controller
 7. Add Category Delete View
 	
-### Section 4
+### Section 1.4
 
 1. Create Model Product
 2. Add DbSet in Context
@@ -50,7 +52,7 @@ Get practice in development MVC asp.net apps.
 11. Create action Delete
 12. Create view Delete
 
-### Section 5 (Include settings of UI)
+### Section 1.5 (Include settings of UI)
 		
 1. Change Nav bashboard
 2. Make new Home Index page
@@ -66,7 +68,7 @@ Get practice in development MVC asp.net apps.
 10. Add functions session in Home controller action Details
 11. Add action RremoveFromCart to Remove cart from list
 
-### Section 6 (Setting Identity system)
+### Section 1.6 (Setting Identity system)
 		
 1. Add NugetPacket Microsoft Identity Core
 2. Add inheritance IdentityDbContext
@@ -86,7 +88,7 @@ Get practice in development MVC asp.net apps.
 16. Set logic to create Admin only Admin
 17. Change UI RolePages
 
-### Section 7 
+### Section 1.7 
 
 1. Add controller for basket (CartController)
 2. Add view Cart
@@ -104,4 +106,17 @@ Get practice in development MVC asp.net apps.
 14. Use in Summary view `for` instead of the `foreach` and hidden item.Id and item.name
 15.	Render Inquiry.html and insert item
 16. Add send logic
-17. 
+
+#### ChAPTER 2 
+
+### Section 2.2 - Changing the architecture of the project.
+9. Introduction
+10. - 11. Move services in it's own project `Utility`
+12. Move all Models in it's own project `Entities`
+13. - 14. Create DAL layer
+15. Create test migration 
+16. Add plagins: 
+				- new version of [bootstrap](https://getbootstrap.com/)
+				- [CodeSeven/toastr](https://github.com/CodeSeven/toastr)
+				- [Syncfusion](https://ej2.syncfusion.com/aspnetcore/Grid/GridOverview#/material)
+				- [Datatables](https://datatables.net/)
