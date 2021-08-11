@@ -9,13 +9,15 @@
     <div class="backgroundWhiteBorder">
         <div class="container">
             <div class="card">
-                <div class="card-header bg-dark text-light ml-0 row container">
-                    <div class="col-6">
-                        <i class="fa fa-shopping-cart"></i> &nbsp;
-                        Order Summary
-                    </div>
-                    <div class="col-6 text-right">
-                        <a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
+                <div class="card-header bg-dark text-light">
+                    <div class="row">
+                        <div class="col-6">
+                            <i class="fa fa-shopping-cart"></i> &nbsp;
+                            Order Summary
+                        </div>
+                        <div class="col-6 text-end">
+                            <a asp-action="Index" class="btn btn-outline-info btn-sm">Back to Cart</a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
@@ -78,8 +80,9 @@
                                             </li>
                                         }
                                     </ul>
-                                    <p>Total price: @ViewBag.TotalPrice</p>
-                                </div>
+                                    <div class="text-danger text-center" style="font-size: 24px">
+                                        <b><p>Total price: @ViewBag.TotalPrice</p></b>
+                                    </div>
                             </div>
                         </div>
                     </div>
