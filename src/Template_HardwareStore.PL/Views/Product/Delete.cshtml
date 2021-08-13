@@ -2,7 +2,7 @@
 
 <form method="post">
     <input asp-for="Id" hidden />
-    <div class="border p-3">
+    <div class="border p-3 bg-white">
 
         <div class="form-group row">
             <h2 class="text-info pl-3">
@@ -12,7 +12,7 @@
 
         <div class="row">
             <div class="col-8">
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Name"> </label>
                     </div>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Price"> </label>
                     </div>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Description"> </label>
                     </div>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Category.Id"> </label>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="ApplicationType.Id"> </label>
                     </div>
@@ -58,7 +58,7 @@
                 </div>
 
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-8 offset-4 row">
 
                         <div class="col">
@@ -74,7 +74,7 @@
                 </div>
             </div>
 
-            <div class="col-4">
+            <div class="col-4 py-2">
                 <img src="@WebConstants.IamgePath@Model.Image" width="100%" style="border-radius: 5px; border: Solid 1px #bbb" alt="Category image" />
             </div>
         </div>
