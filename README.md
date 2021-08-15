@@ -107,9 +107,10 @@ Get practice in development MVC asp.net apps.
 15.	Render Inquiry.html and insert item
 16. Add send logic
 
-#### ChAPTER 2 
+#### CHAPTER 2 
 
 ### Section 2.2 - Changing the architecture of the project.
+
 9. Introduction
 10. - 11. Move services in it's own project `Utility`
 12. Move all Models in it's own project `Entities`
@@ -121,3 +122,8 @@ Get practice in development MVC asp.net apps.
 				- [Syncfusion](https://ej2.syncfusion.com/aspnetcore/Grid/GridOverview#/material)
 				- [Datatables](https://datatables.net/)
 17. - 18. Setup settings of bootstrap.
+
+### Section 2.3 - Repository.
+
+20. Make Interface Patern Repository
+
