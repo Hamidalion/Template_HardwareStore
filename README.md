@@ -128,4 +128,5 @@ Get practice in development MVC asp.net apps.
 20. - 22. Make Interface Patern Repository
 23. Create separate Repository for Category
 24. Change in Category controller context to repository
-25. 
+25. Create separate Repository for ApplicationType and Change in ApplicationType controller context to repository
+26. 
