@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using Template_HardwareStore.DAL.Context;
+using Template_HardwareStore.DAL.DependencyInjection;
 using Template_HardwareStore.Utility.MailSender;
 
 namespace Template_HardwareStore.PL
@@ -36,8 +37,6 @@ namespace Template_HardwareStore.PL
 
             services.AddTransient<IEmailSender, EmailSender>();
 
-            
-
             services.AddSession(option =>
             {
                 option.IdleTimeout = TimeSpan.FromMinutes(10);
@@ -46,6 +45,8 @@ namespace Template_HardwareStore.PL
             });
 
             services.AddControllersWithViews();
+
+            IocDal.Setup(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,25 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Template_HardwareStore.DAL.Repository.Interface;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Utility.Constants;
-using Template_HardwareStore.DAL.Context;
 
 namespace Template_HardwareStore.PL.Controllers
 {
     [Authorize(Roles = WebConstants.AdminRole)]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _db = db;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> modelsList = _db.Categories;
+            IEnumerable<Category> modelsList = _categoryRepository.GetAll();
             return View(modelsList);
         }
 
@@ -35,8 +35,8 @@ namespace Template_HardwareStore.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _categoryRepository.Add(category);
+                _categoryRepository.Save();
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -50,7 +50,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.Categories.Find(id);
+            var model = _categoryRepository.FindById(id.GetValueOrDefault());
             if (model == null)
             {
                 return NotFound();
@@ -65,8 +65,8 @@ namespace Template_HardwareStore.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _categoryRepository.Update(category);
+                _categoryRepository.Save();
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -80,7 +80,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.Categories.Find(id);
+            var model = _categoryRepository.FindById(id.GetValueOrDefault());
             if (model == null)
             {
                 return NotFound();
@@ -94,11 +94,11 @@ namespace Template_HardwareStore.PL.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var model = _db.Categories.Find(id);
+            var model = _categoryRepository.FindById(id.GetValueOrDefault());
             if (ModelState.IsValid && model != null)
             {
-                _db.Categories.Remove(model);
-                _db.SaveChanges();
+                _categoryRepository.Remove(model);
+                _categoryRepository.Save();
                 return RedirectToAction("Index");
             }
             else

@@ -29,8 +29,8 @@ namespace Template_HardwareStore.DAL.Repository
             return dbSet.Find(id);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> filter = null, 
-                                string includeProperties = null, 
+        public T FirstOrDefault(Expression<Func<T, bool>> filter = null,
+                                string includeProperties = null,
                                 bool isTracking = true)
         {
             IQueryable<T> query = dbSet;
@@ -54,9 +54,9 @@ namespace Template_HardwareStore.DAL.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null, 
-                                     Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, 
-                                     string includeProperties = null, 
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> filter = null,
+                                     Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                                     string includeProperties = null,
                                      bool isTracking = true)
         {
             IQueryable<T> query = dbSet;
@@ -69,7 +69,7 @@ namespace Template_HardwareStore.DAL.Repository
             {
                 foreach (var property in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)) // дабовляем свойства
                 {
-                    query = query.Include(property); 
+                    query = query.Include(property);
                 }
             }
             if (orderBy != null) // проверяем есть ли сортировка

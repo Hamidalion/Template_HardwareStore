@@ -1,25 +1,25 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Template_HardwareStore.DAL.Repository.Interface;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Utility.Constants;
-using Template_HardwareStore.DAL.Context;
 
 namespace Template_HardwareStore.PL.Controllers
 {
     [Authorize(Roles = WebConstants.AdminRole)]
     public class ApplicationTypeController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IRepository<ApplicationType> _repository;
 
-        public ApplicationTypeController(ApplicationDbContext db)
+        public ApplicationTypeController(IRepository<ApplicationType> repository)
         {
-            _db = db;
+            _repository = repository;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<ApplicationType> modelsList = _db.ApplicationTypes;
+            IEnumerable<ApplicationType> modelsList = _repository.GetAll();
             return View(modelsList);
         }
 
@@ -35,8 +35,8 @@ namespace Template_HardwareStore.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.ApplicationTypes.Add(applicationType);
-                _db.SaveChanges();
+                _repository.Add(applicationType);
+                _repository.Save();
                 return RedirectToAction("Index");
             }
             return View(applicationType);
@@ -50,7 +50,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.ApplicationTypes.Find(id);
+            var model = _repository.FindById(id.GetValueOrDefault());
             if (model == null)
             {
                 return NotFound();
@@ -65,8 +65,8 @@ namespace Template_HardwareStore.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.ApplicationTypes.Update(applicationType);
-                _db.SaveChanges();
+                //_repository.Update(applicationType);
+                _repository.Save();
                 return RedirectToAction("Index");
             }
             return View(applicationType);
@@ -80,7 +80,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var model = _db.ApplicationTypes.Find(id);
+            var model = _repository.FindById(id.GetValueOrDefault());
             if (model == null)
             {
                 return NotFound();
@@ -94,11 +94,11 @@ namespace Template_HardwareStore.PL.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var model = _db.ApplicationTypes.Find(id);
+            var model = _repository.FindById(id.GetValueOrDefault());
             if (ModelState.IsValid && model != null)
             {
-                _db.ApplicationTypes.Remove(model);
-                _db.SaveChanges();
+                _repository.Remove(model);
+                _repository.Save();
                 return RedirectToAction("Index");
             }
             else
