@@ -10,9 +10,9 @@ namespace Template_HardwareStore.PL.Controllers
     [Authorize(Roles = WebConstants.AdminRole)]
     public class ApplicationTypeController : Controller
     {
-        private readonly IRepository<ApplicationType> _repository;
+        private readonly IApplicationTypeRepository _repository;
 
-        public ApplicationTypeController(IRepository<ApplicationType> repository)
+        public ApplicationTypeController(IApplicationTypeRepository repository)
         {
             _repository = repository;
         }
@@ -65,7 +65,7 @@ namespace Template_HardwareStore.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                //_repository.Update(applicationType);
+                _repository.Update(applicationType);
                 _repository.Save();
                 return RedirectToAction("Index");
             }

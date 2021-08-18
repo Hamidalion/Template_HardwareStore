@@ -15,7 +15,7 @@ namespace Template_HardwareStore.DAL.DependencyInjection
         private static void AddRepositories(IServiceCollection services)
         {
             services.AddScoped <ICategoryRepository, CategoryRepository>();
-            services.AddScoped <IRepository<ApplicationType>, Repository<ApplicationType>>(); // сервис активный в течении одного запроса
+            services.AddScoped <IApplicationTypeRepository, ApplicationTypeRepository>(); // сервис активный в течении одного запроса
         }
     }
 }
