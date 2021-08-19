@@ -129,4 +129,5 @@ Get practice in development MVC asp.net apps.
 23. Create separate Repository for Category
 24. Change in Category controller context to repository
 25. Create separate Repository for ApplicationType and Change in ApplicationType controller context to repository
-26. 
+26. Create separate Repository for Products
+27. Change in Products controller context to repository

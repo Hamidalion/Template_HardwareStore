@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Template_HardwareStore.Entities\Template_HardwareStore.Entities.csproj" />
+    <ProjectReference Include="..\Template_HardwareStore.Utility\Template_HardwareStore.Utility.csproj" />
   </ItemGroup>
 
 </Project>

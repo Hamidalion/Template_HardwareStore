@@ -11,24 +11,25 @@ using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Entities.Models.ViewModels;
 using Template_HardwareStore.Utility.Constants;
 using Template_HardwareStore.DAL.Context;
+using Template_HardwareStore.DAL.Repository.Interface;
 
 namespace Template_HardwareStore.PL.Controllers
 {
     [Authorize(Roles = WebConstants.AdminRole)]
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _productRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment)
         {
-            _db = db;
+            _productRepository = productRepository;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Product> modelsList = _db.Products.Include(u => u.Category).Include(u => u.ApplicationType);
+            IEnumerable<Product> modelsList = _productRepository.GetAll(includeProperties:$"{WebConstants.CategoryName},{WebConstants.ApplicationTypeName}");
 
             //foreach (var item in modelsList)
             //{
@@ -59,18 +60,8 @@ namespace Template_HardwareStore.PL.Controllers
             ProductViewModel productViewModel = new ProductViewModel()
             {
                 Product = new Product(),
-                CategorySelectListItem = _db.Categories.Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString(),
-                }),
-
-                ApplicationTypeSelectListItem = _db.ApplicationTypes.Select(a => new SelectListItem
-                {
-                    Text = a.Name,
-                    Value = a.Id.ToString(),
-                })
-
+                CategorySelectListItem = _productRepository.GetAllDropDawnList(WebConstants.CategoryName),
+                ApplicationTypeSelectListItem = _productRepository.GetAllDropDawnList(WebConstants.ApplicationTypeName)
             };
 
             if (id == null || id == 0)
@@ -79,7 +70,7 @@ namespace Template_HardwareStore.PL.Controllers
             }
             else
             {
-                productViewModel.Product = _db.Products.Find(id);
+                productViewModel.Product = _productRepository.FindById(id.GetValueOrDefault());
                 if (productViewModel.Product == null)
                 {
                     return NotFound();
@@ -98,16 +89,15 @@ namespace Template_HardwareStore.PL.Controllers
             if (ModelState.IsValid)
             {
                 var files = HttpContext.Request.Form.Files;
-
                 string webRootPath = _webHostEnvironment.WebRootPath;
-                string upload = webRootPath + WebConstants.IamgePath;
-                string fileName = Guid.NewGuid().ToString();
-                string extansion = Path.GetExtension(files[0].FileName);
 
                 if (productViewModel.Product.Id == 0)
                 {
-                    // Creat Product
+                    string upload = webRootPath + WebConstants.IamgePath;
+                    string fileName = Guid.NewGuid().ToString();
+                    string extansion = Path.GetExtension(files[0].FileName);
 
+                    // Creat Product
                     using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
                     {
                         files[0].CopyTo(fileStream);
@@ -115,17 +105,21 @@ namespace Template_HardwareStore.PL.Controllers
 
                     productViewModel.Product.Image = fileName + extansion;
 
-                    _db.Products.Add(productViewModel.Product);
+                    _productRepository.Add(productViewModel.Product);
                 }
                 else
                 {
                     // Edit Product
-
-                    var productModel = _db.Products.AsNoTracking().FirstOrDefault(p => p.Id == productViewModel.Product.Id);
-
+                    var productModel = _productRepository.FirstOrDefault(p => p.Id == productViewModel.Product.Id, isTracking:false);
+                    
                     if (files.Count > 0)
                     {
+                        string upload = webRootPath + WebConstants.IamgePath;
+                        string fileName = Guid.NewGuid().ToString();
+                        string extansion = Path.GetExtension(files[0].FileName);
+
                         var oldFile = Path.Combine(upload, productModel.Image);
+
                         if (System.IO.File.Exists(oldFile))
                         {
                             System.IO.File.Delete(oldFile);
@@ -143,26 +137,16 @@ namespace Template_HardwareStore.PL.Controllers
                         productViewModel.Product.Image = productModel.Image;
                     }
 
-                    _db.Products.Update(productViewModel.Product);
+                    _productRepository.Update(productViewModel.Product);
                 }
 
-                _db.SaveChanges();
-                _db.Dispose();
+                _productRepository.Save();
 
                 return RedirectToAction("Index");
             }
 
-            productViewModel.CategorySelectListItem = _db.Categories.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString(),
-            });
-
-            productViewModel.ApplicationTypeSelectListItem = _db.ApplicationTypes.Select(a => new SelectListItem
-            {
-                Text = a.Name,
-                Value = a.Id.ToString(),
-            });
+            productViewModel.CategorySelectListItem = _productRepository.GetAllDropDawnList(WebConstants.CategoryName);
+            productViewModel.ApplicationTypeSelectListItem = _productRepository.GetAllDropDawnList(WebConstants.ApplicationTypeName);
 
             return View(productViewModel);
         }
@@ -175,9 +159,7 @@ namespace Template_HardwareStore.PL.Controllers
                 return NotFound();
             }
 
-            var productModel = _db.Products.Include(c => c.Category)
-                                           .Include(c => c.ApplicationType)
-                                           .FirstOrDefault(c => c.Id == id); //egger loading
+            var productModel = _productRepository.FirstOrDefault(c => c.Id == id, includeProperties: $"{WebConstants.CategoryName},{WebConstants.ApplicationTypeName}");
 
             //productModel.Category = _db.Categories.Find(productModel.CategoryId);
 
@@ -194,7 +176,7 @@ namespace Template_HardwareStore.PL.Controllers
         [ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            var model = _db.Products.Find(id);
+            var model = _productRepository.FindById(id.GetValueOrDefault());
             if (ModelState.IsValid && model != null)
             {
                 string upload = _webHostEnvironment.WebRootPath + WebConstants.IamgePath; ;
@@ -206,8 +188,8 @@ namespace Template_HardwareStore.PL.Controllers
                     System.IO.File.Delete(file);
                 }
 
-                _db.Products.Remove(model);
-                _db.SaveChanges();
+                _productRepository.Remove(model);
+                _productRepository.Save();
                 return RedirectToAction("Index");
             }
             else
