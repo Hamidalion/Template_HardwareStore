@@ -131,3 +131,8 @@ Get practice in development MVC asp.net apps.
 25. Create separate Repository for ApplicationType and Change in ApplicationType controller context to repository
 26. Create separate Repository for Products
 27. Change in Products controller context to repository
+
+### Section 2.4 
+
+29. Crate InquiryHeader model
+30. Create InquiryDetail model
