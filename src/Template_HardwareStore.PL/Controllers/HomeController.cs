@@ -1,34 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Template_HardwareStore.Utility.Extensions;
+using Template_HardwareStore.DAL.Repository;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Entities.Models.ViewModels;
 using Template_HardwareStore.Utility.Constants;
-using Template_HardwareStore.DAL.Context;
+using Template_HardwareStore.Utility.Extensions;
 
 namespace Template_HardwareStore.PL.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
+        private readonly ProductRepository _productRepository;
+        private readonly CategoryRepository _categoryRepository;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger, ProductRepository productRepository, CategoryRepository categoryRepository)
         {
             _logger = logger;
-            _db = db;
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
         {
             HomeViewModel homeViewModel = new HomeViewModel()
             {
-                Products = _db.Products.Include(u => u.ApplicationType).Include(u => u.Category),
-                Categories = _db.Categories
+                Products = _productRepository.GetAll(includeProperties: "ApplicationType,Category"),
+                Categories = _categoryRepository.GetAll()
             };
             return View(homeViewModel);
         }
@@ -55,10 +56,7 @@ namespace Template_HardwareStore.PL.Controllers
 
             DetailViewModel detailViewModel = new DetailViewModel()
             {
-                Product = _db.Products.Include(u => u.Category)
-                                      .Include(u => u.ApplicationType)
-                                      .Where(u => u.Id == id)
-                                      .FirstOrDefault(),
+                Product = _productRepository.FirstOrDefault(u => u.Id == id, includeProperties: "ApplicationType,Category"),
                 ExistInCart = false,
             };
 

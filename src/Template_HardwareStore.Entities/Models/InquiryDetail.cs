@@ -8,12 +8,12 @@ namespace Template_HardwareStore.Entities.Models
         [Key]
         public int Id { get; set; }
 
-        public string InquiryHeaderId { get; set; }
+        public int InquiryHeaderId { get; set; }
 
         [ForeignKey("InquiryHeaderId")]
         public InquiryHeader InquiryHeader { get; set; }
 
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         public Product Product { get; set; }

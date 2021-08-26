@@ -17,5 +17,9 @@ namespace Template_HardwareStore.DAL.Context
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<InquiryDetail> InquiryDetails { get; set; }
+
+        public DbSet<InquiryHeader> InquiryHeaders { get; set; }
     }
 }
