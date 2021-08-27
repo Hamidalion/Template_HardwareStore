@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -46,122 +47,148 @@ namespace Template_HardwareStore.PL.Controllers
             _emailSender = emailSender;
         }
 
-    public IActionResult Index()
-    {
-        List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-
-        if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
-            && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+        public IActionResult Index()
         {
-            shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            }
+
+            List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
+
+            IEnumerable<Product> prodList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
+
+            return View(prodList);
         }
 
-        List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
-
-        IEnumerable<Product> prodList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
-
-        return View(prodList);
-    }
-
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    [ActionName("Index")]
-    public IActionResult IndexPost()
-    {
-        return RedirectToAction(nameof(Summary));
-    }
-
-    public IActionResult Summary()
-    {
-        var claimsIdentity = (ClaimsIdentity)User.Identity;
-        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier); // Если объект вошел в систему он будет определен
-                                                                         //var userId = await _accountManager.GetUserIdByNameAsync(User.Identity.Name);  Еще Способ
-                                                                         //var userId = User.FindFirstValue(ClaimTypes.Name); Еще способ
-
-        List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-
-        if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
-            && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Index")]
+        public IActionResult IndexPost()
         {
-            shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            return RedirectToAction(nameof(Summary));
         }
 
-        List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
-
-        IEnumerable<Product> prodList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
-
-        ProductUserViewModel productUserViewModel = new ProductUserViewModel()
+        public IActionResult Summary()
         {
-            ApplicationUser = _applicationUserRepository.FirstOrDefault(u => u.Id == claim.Value),
-            ProductList = prodList.ToList()
-        };
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier); // Если объект вошел в систему он будет определен
+                                                                             //var userId = await _accountManager.GetUserIdByNameAsync(User.Identity.Name);  Еще Способ
+                                                                             //var userId = User.FindFirstValue(ClaimTypes.Name); Еще способ
 
-        double totalPrice = 0;
-        foreach (var item in prodList)
-        {
-            totalPrice += item.Price;
-        }
-        ViewBag.TotalPrice = totalPrice;
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
 
-        return View(productUserViewModel);
-    }
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            }
 
+            List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
 
-    [HttpPost, ActionName("Summary")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> SummaryPostAsync(ProductUserViewModel ProductUserViewModel)
-    {
-        var pathToTemplate = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                                               + "templates" + Path.DirectorySeparatorChar.ToString()
-                                               + "Inquiry.html";
+            IEnumerable<Product> prodList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
 
-        var subject = "New Inquary";
-        string htmlBody = "";
+            ProductUserViewModel productUserViewModel = new ProductUserViewModel()
+            {
+                ApplicationUser = _applicationUserRepository.FirstOrDefault(u => u.Id == claim.Value),
+                ProductList = prodList.ToList()
+            };
 
-        using (StreamReader sr = System.IO.File.OpenText(pathToTemplate))
-        {
-            htmlBody = sr.ReadToEnd();
+            double totalPrice = 0;
+            foreach (var item in prodList)
+            {
+                totalPrice += item.Price;
+            }
+            ViewBag.TotalPrice = totalPrice;
+
+            return View(productUserViewModel);
         }
 
-        StringBuilder productListSB = new StringBuilder();
-
-        foreach (var item in ProductUserViewModel.ProductList)
+        [HttpPost, ActionName("Summary")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SummaryPostAsync(ProductUserViewModel productUserViewModel)
         {
-            productListSB.Append($" - Name: {item.Name} <span style='font-size: 14px' > (ID: {item.Id}) </span> <br /> ");
+            var claimIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+            var pathToTemplate = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                                                   + "templates" + Path.DirectorySeparatorChar.ToString()
+                                                   + "Inquiry.html";
+
+            var subject = "New Inquary";
+            string htmlBody = "";
+
+            using (StreamReader sr = System.IO.File.OpenText(pathToTemplate))
+            {
+                htmlBody = sr.ReadToEnd();
+            }
+
+            StringBuilder productListSB = new StringBuilder();
+
+            foreach (var item in ProductUserViewModel.ProductList)
+            {
+                productListSB.Append($" - Name: {item.Name} <span style='font-size: 14px' > (ID: {item.Id}) </span> <br /> ");
+            }
+
+            string messageBody = string.Format(htmlBody, productUserViewModel.ApplicationUser.FullName,
+                                                         productUserViewModel.ApplicationUser.Email,
+                                                         productUserViewModel.ApplicationUser.PhoneNumber,
+                                                         productListSB.ToString());
+
+            await _emailSender.SendEmailAsync(ProductUserViewModel.ApplicationUser.Email, subject, messageBody);
+
+            InquiryHeader inquiryHeader = new InquiryHeader()
+            {
+                ApplicationUserId = claim.Value,
+                FullName = productUserViewModel.ApplicationUser.FullName,
+                Email = productUserViewModel.ApplicationUser.Email,
+                PhoneNamber = productUserViewModel.ApplicationUser.PhoneNumber,
+                InquiryDate = DateTime.Now
+            };
+
+            _inquiryHeaderRepository.Add(inquiryHeader);
+            _inquiryHeaderRepository.Save();
+
+            foreach (var product in productUserViewModel.ProductList)
+            {
+                InquiryDetail inquiryDetail = new InquiryDetail()
+                {
+                    InquiryHeaderId = inquiryHeader.Id,
+                    ProductId = product.Id,
+                };
+
+                _inquiryDetailRepository.Add(inquiryDetail);
+                _inquiryDetailRepository.Save();
+            }
+
+            return RedirectToAction(nameof(InquiryConfirmation));
         }
 
-        string messageBody = string.Format(htmlBody, ProductUserViewModel.ApplicationUser.FullName,
-                                                     ProductUserViewModel.ApplicationUser.Email,
-                                                     ProductUserViewModel.ApplicationUser.PhoneNumber,
-                                                     productListSB.ToString());
-
-        await _emailSender.SendEmailAsync(ProductUserViewModel.ApplicationUser.Email, subject, messageBody);
-
-        return RedirectToAction(nameof(InquiryConfirmation));
-    }
-
-    public IActionResult InquiryConfirmation()
-    {
-        HttpContext.Session.Clear();
-
-        return View();
-    }
-
-    public IActionResult Remove(int id)
-    {
-        List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-
-        if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
-            && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+        public IActionResult InquiryConfirmation()
         {
-            shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            HttpContext.Session.Clear();
+
+            return View();
         }
 
-        shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId.Equals(id)));
+        public IActionResult Remove(int id)
+        {
+            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
 
-        HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
+                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            {
+                shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+            }
 
-        return RedirectToAction(nameof(Index));
+            shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId.Equals(id)));
+
+            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+
+            return RedirectToAction(nameof(Index));
+        }
     }
-}
 }

@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Template_HardwareStore.DAL.Repository.Interface;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Entities.Models.ViewModels;
 using Template_HardwareStore.Utility.Constants;
-using Template_HardwareStore.DAL.Context;
-using Template_HardwareStore.DAL.Repository.Interface;
 
 namespace Template_HardwareStore.PL.Controllers
 {
@@ -29,7 +25,7 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> modelsList = _productRepository.GetAll(includeProperties:$"{WebConstants.CategoryName},{WebConstants.ApplicationTypeName}");
+            IEnumerable<Product> modelsList = _productRepository.GetAll(includeProperties: $"{WebConstants.CategoryName},{WebConstants.ApplicationTypeName}");
 
             //foreach (var item in modelsList)
             //{
@@ -110,8 +106,8 @@ namespace Template_HardwareStore.PL.Controllers
                 else
                 {
                     // Edit Product
-                    var productModel = _productRepository.FirstOrDefault(p => p.Id == productViewModel.Product.Id, isTracking:false);
-                    
+                    var productModel = _productRepository.FirstOrDefault(p => p.Id == productViewModel.Product.Id, isTracking: false);
+
                     if (files.Count > 0)
                     {
                         string upload = webRootPath + WebConstants.IamgePath;
