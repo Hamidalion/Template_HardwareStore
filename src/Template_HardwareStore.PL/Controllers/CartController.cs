@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Template_HardwareStore.DAL.Repository;
+using Template_HardwareStore.DAL.Repository.Interface;
 using Template_HardwareStore.Entities.Models;
 using Template_HardwareStore.Entities.Models.ViewModels;
 using Template_HardwareStore.Utility.Constants;
@@ -21,10 +22,10 @@ namespace Template_HardwareStore.PL.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        private readonly ProductRepository _productRepository;
-        private readonly ApplicationUserRepository _applicationUserRepository;
-        private readonly InquiryDetailRepository _inquiryDetailRepository;
-        private readonly InquiryHeaderRepository _inquiryHeaderRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly IApplicationUserRepository _applicationUserRepository;
+        private readonly IInquiryDetailRepository _inquiryDetailRepository;
+        private readonly IInquiryHeaderRepository _inquiryHeaderRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IEmailSender _emailSender;
 
@@ -32,10 +33,10 @@ namespace Template_HardwareStore.PL.Controllers
         public ProductUserViewModel ProductUserViewModel { get; set; }
 
 
-        public CartController(ProductRepository productRepository,
-                              ApplicationUserRepository applicationUserRepository,
-                              InquiryDetailRepository inquiryDetailRepository,
-                              InquiryHeaderRepository inquiryHeaderRepository,
+        public CartController(IProductRepository productRepository,
+                              IApplicationUserRepository applicationUserRepository,
+                              IInquiryDetailRepository inquiryDetailRepository,
+                              IInquiryHeaderRepository inquiryHeaderRepository,
                               IWebHostEnvironment webHostEnvironment,
                               IEmailSender emailSender)
         {
@@ -161,8 +162,9 @@ namespace Template_HardwareStore.PL.Controllers
                 };
 
                 _inquiryDetailRepository.Add(inquiryDetail);
-                _inquiryDetailRepository.Save();
             }
+
+            _inquiryDetailRepository.Save();
 
             return RedirectToAction(nameof(InquiryConfirmation));
         }

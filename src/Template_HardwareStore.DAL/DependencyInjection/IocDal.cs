@@ -18,6 +18,7 @@ namespace Template_HardwareStore.DAL.DependencyInjection
             services.AddScoped<IApplicationTypeRepository, ApplicationTypeRepository>(); // сервис активный в течении одного запроса
             services.AddScoped<IInquiryDetailRepository, InquiryDetailRepository>();
             services.AddScoped<IInquiryHeaderRepository, InquiryHeaderRepository>();
+            services.AddScoped<IApplicationUserRepository, ApplicationUserRepository>();
         }
     }
 }
