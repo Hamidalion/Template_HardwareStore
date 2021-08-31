@@ -140,3 +140,6 @@ Get practice in development MVC asp.net apps.
 32. Insert this model in Repository
 33. - 34. Modify controller and repair _db 
 35. Save responses in CartController InquiryDetail and InquiryHeader
+36. Create InquiryControler 
+37. Create Inquiry Index view
+38. Add JS for table
