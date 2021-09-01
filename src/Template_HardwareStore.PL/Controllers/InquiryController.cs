@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Template_HardwareStore.DAL.Repository.Interface;
+using Template_HardwareStore.Entities.Models.ViewModels;
 
 namespace Template_HardwareStore.PL.Controllers
 {
@@ -7,6 +8,10 @@ namespace Template_HardwareStore.PL.Controllers
     {
         private readonly IInquiryHeaderRepository _inquiryHeaderRepository;
         private readonly IInquiryDetailRepository _inquiryDetailRepository;
+
+        [BindProperty]
+        public InquiryViewModel InquiryViewModel { get; set; }
+
 
         public InquiryController(IInquiryHeaderRepository inquiryHeaderRepository, IInquiryDetailRepository inquiryDetailRepository)
         {
@@ -17,6 +22,15 @@ namespace Template_HardwareStore.PL.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Details(int id)
+        {
+            InquiryViewModel = new InquiryViewModel() {
+                InquiryHeader = _inquiryHeaderRepository.FirstOrDefault(u => u.Id == id),
+                InquiryDetail = _inquiryDetailRepository.GetAll(u => u.InquiryHeaderId == id, includeProperties: "Product") 
+            };
+            return View(InquiryViewModel);
         }
 
         #region API calls
