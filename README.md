@@ -144,3 +144,4 @@ Get practice in development MVC asp.net apps.
 37. Create Inquiry Index view
 38. Add JS for table
 39. Add action Details in InquaryController
+40. Add Inquiry detail View
