@@ -141,7 +141,13 @@ Get practice in development MVC asp.net apps.
 33. - 34. Modify controller and repair _db 
 35. Save responses in CartController InquiryDetail and InquiryHeader
 36. Create InquiryControler 
+
+### Section 2.5
+
 37. Create Inquiry Index view
 38. Add JS for table
 39. Add action Details in InquaryController
 40. Add Inquiry detail View
+41. Setting view details
+42. Setting function add Inquary detail to basket
+ 

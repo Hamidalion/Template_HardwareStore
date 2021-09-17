@@ -5,6 +5,7 @@
         public static string IamgePath = @"\img\products\";
 
         public static string SessionCart = "ShopingCartSession";
+        public static string SessionInquaryId = "InquarySession";
 
         public const string AdminRole = "Admin";
         public const string CustomerRole = "Customer";
