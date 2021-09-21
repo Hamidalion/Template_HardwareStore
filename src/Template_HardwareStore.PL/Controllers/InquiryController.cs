@@ -30,9 +30,10 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Details(int id)
         {
-            InquiryViewModel = new InquiryViewModel() {
+            InquiryViewModel = new InquiryViewModel()
+            {
                 InquiryHeader = _inquiryHeaderRepository.FirstOrDefault(u => u.Id == id),
-                InquiryDetail = _inquiryDetailRepository.GetAll(u => u.InquiryHeaderId == id, includeProperties: "Product") 
+                InquiryDetail = _inquiryDetailRepository.GetAll(u => u.InquiryHeaderId == id, includeProperties: "Product")
             };
             return View(InquiryViewModel);
         }
@@ -42,7 +43,7 @@ namespace Template_HardwareStore.PL.Controllers
         public IActionResult Details()
         {
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            
+
             InquiryViewModel.InquiryDetail = _inquiryDetailRepository.GetAll(u => u.InquiryHeaderId == InquiryViewModel.InquiryHeader.Id);
 
             foreach (var detail in InquiryViewModel.InquiryDetail)
@@ -62,12 +63,26 @@ namespace Template_HardwareStore.PL.Controllers
             return RedirectToAction("Index", "Cart");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Фильтр ValidateAntiforgeryToken предназначен для противодействия подделке межсайтовых запросов, производя верификацию токенов при обращении к методу действия. Наиболее частым случаем является применение данного фильтра к методам, отвечающим за авторизацию
+        public IActionResult Delete(string id)
+        {
+            InquiryHeader inquiryHeader = _inquiryHeaderRepository.FirstOrDefault(u => u.Id == InquiryViewModel.InquiryHeader.Id);
+            IEnumerable<InquiryDetail> inquiryDetails = _inquiryDetailRepository.GetAll(u => u.InquiryHeaderId == InquiryViewModel.InquiryHeader.Id);
+
+            _inquiryDetailRepository.RemoveRange(inquiryDetails);
+            _inquiryHeaderRepository.Remove(inquiryHeader);
+            _inquiryHeaderRepository.Save();  // не надо здесь вызывать два сохраннения, достаточно только одного
+
+            return RedirectToAction(nameof(Index));
+        }
+
         #region API calls
 
         [HttpGet]
         public IActionResult GetInquiryList()
         {
-            return Json( new { data = _inquiryHeaderRepository.GetAll()});
+            return Json(new { data = _inquiryHeaderRepository.GetAll() });
         }
         #endregion
     }

@@ -150,4 +150,4 @@ Get practice in development MVC asp.net apps.
 40. Add Inquiry detail View
 41. Setting view details
 42. Setting function add Inquary detail to basket
- 
+43. Create RemoveRange in Repository and action Delete in InquaryComtroller
