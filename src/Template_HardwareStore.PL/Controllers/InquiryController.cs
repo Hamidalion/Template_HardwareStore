@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using Template_HardwareStore.DAL.Repository.Interface;
 using Template_HardwareStore.Entities.Models;
@@ -8,6 +9,7 @@ using Template_HardwareStore.Utility.Extensions;
 
 namespace Template_HardwareStore.PL.Controllers
 {
+    [Authorize(WebConstants.AdminRole)]
     public class InquiryController : Controller
     {
         private readonly IInquiryHeaderRepository _inquiryHeaderRepository;

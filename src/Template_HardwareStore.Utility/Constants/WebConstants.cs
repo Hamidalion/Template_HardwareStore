@@ -14,5 +14,9 @@
 
         public static string CategoryName = "Category";
         public static string ApplicationTypeName = "ApplicationType";
+
+        // Natification constants
+        public static string Success = "Success";
+        public static string Error = "Error";
     }
 }

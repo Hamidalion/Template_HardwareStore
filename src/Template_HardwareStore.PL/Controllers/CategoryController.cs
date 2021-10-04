@@ -37,7 +37,14 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _categoryRepository.Add(category);
                 _categoryRepository.Save();
+
+                TempData[WebConstants.Success] = "Category added seccessfully";
+
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[WebConstants.Error] = "Error of creating catgory";
             }
             return View(category);
         }
