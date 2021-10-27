@@ -37,7 +37,14 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _repository.Add(applicationType);
                 _repository.Save();
+
+                TempData[WebConstants.Success] = "Application Type added seccessfully.";
+
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[WebConstants.Error] = "Error of creating Application Type!";
             }
             return View(applicationType);
         }
@@ -67,7 +74,14 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _repository.Update(applicationType);
                 _repository.Save();
+
+                TempData[WebConstants.Success] = "Application Type edited seccessfully.";
+
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[WebConstants.Error] = "Application Type edited with error!";
             }
             return View(applicationType);
         }
@@ -99,10 +113,15 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _repository.Remove(model);
                 _repository.Save();
+
+                TempData[WebConstants.Success] = "Application Type deliteded seccessfully.";
+
                 return RedirectToAction("Index");
             }
             else
             {
+                TempData[WebConstants.Error] = "Application Type deleted with error!";
+
                 return NotFound();
             }
         }

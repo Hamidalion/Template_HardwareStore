@@ -69,6 +69,8 @@ namespace Template_HardwareStore.PL.Controllers
                 productViewModel.Product = _productRepository.FindById(id.GetValueOrDefault());
                 if (productViewModel.Product == null)
                 {
+                    TempData[WebConstants.Error] = "Product not find!";
+
                     return NotFound();
                 }
                 else
@@ -82,63 +84,72 @@ namespace Template_HardwareStore.PL.Controllers
         [ValidateAntiForgeryToken] //токен защиты от взлома
         public IActionResult Upsert(ProductViewModel productViewModel)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var files = HttpContext.Request.Form.Files;
-                string webRootPath = _webHostEnvironment.WebRootPath;
-
-                if (productViewModel.Product.Id == 0)
+                if (ModelState.IsValid)
                 {
-                    string upload = webRootPath + WebConstants.IamgePath;
-                    string fileName = Guid.NewGuid().ToString();
-                    string extansion = Path.GetExtension(files[0].FileName);
+                    var files = HttpContext.Request.Form.Files;
+                    string webRootPath = _webHostEnvironment.WebRootPath;
 
-                    // Creat Product
-                    using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
-                    {
-                        files[0].CopyTo(fileStream);
-                    }
-
-                    productViewModel.Product.Image = fileName + extansion;
-
-                    _productRepository.Add(productViewModel.Product);
-                }
-                else
-                {
-                    // Edit Product
-                    var productModel = _productRepository.FirstOrDefault(p => p.Id == productViewModel.Product.Id, isTracking: false);
-
-                    if (files.Count > 0)
+                    if (productViewModel.Product.Id == 0)
                     {
                         string upload = webRootPath + WebConstants.IamgePath;
                         string fileName = Guid.NewGuid().ToString();
                         string extansion = Path.GetExtension(files[0].FileName);
 
-                        var oldFile = Path.Combine(upload, productModel.Image);
-
-                        if (System.IO.File.Exists(oldFile))
-                        {
-                            System.IO.File.Delete(oldFile);
-                        }
-
+                        // Creat Product
                         using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
                         {
                             files[0].CopyTo(fileStream);
                         }
 
                         productViewModel.Product.Image = fileName + extansion;
+
+                        _productRepository.Add(productViewModel.Product);
                     }
                     else
                     {
-                        productViewModel.Product.Image = productModel.Image;
+                        // Edit Product
+                        var productModel = _productRepository.FirstOrDefault(p => p.Id == productViewModel.Product.Id, isTracking: false);
+
+                        if (files.Count > 0)
+                        {
+                            string upload = webRootPath + WebConstants.IamgePath;
+                            string fileName = Guid.NewGuid().ToString();
+                            string extansion = Path.GetExtension(files[0].FileName);
+
+                            var oldFile = Path.Combine(upload, productModel.Image);
+
+                            if (System.IO.File.Exists(oldFile))
+                            {
+                                System.IO.File.Delete(oldFile);
+                            }
+
+                            using (var fileStream = new FileStream(Path.Combine(upload, fileName + extansion), FileMode.Create))
+                            {
+                                files[0].CopyTo(fileStream);
+                            }
+
+                            productViewModel.Product.Image = fileName + extansion;
+                        }
+                        else
+                        {
+                            productViewModel.Product.Image = productModel.Image;
+                        }
+
+                        _productRepository.Update(productViewModel.Product);
                     }
 
-                    _productRepository.Update(productViewModel.Product);
+                    _productRepository.Save();
+
+                    return RedirectToAction("Index");
                 }
 
-                _productRepository.Save();
-
-                return RedirectToAction("Index");
+                TempData[WebConstants.Success] = "Product edited seccessfully.";
+            }
+            catch (Exception ex)
+            {
+                TempData[WebConstants.Error] = $"Product edited with error {ex}!";
             }
 
             productViewModel.CategorySelectListItem = _productRepository.GetAllDropDawnList(WebConstants.CategoryName);
@@ -186,6 +197,9 @@ namespace Template_HardwareStore.PL.Controllers
 
                 _productRepository.Remove(model);
                 _productRepository.Save();
+
+                TempData[WebConstants.Success] = "Product removed seccessfully.";
+
                 return RedirectToAction("Index");
             }
             else

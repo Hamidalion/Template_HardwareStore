@@ -20,6 +20,7 @@ namespace Template_HardwareStore.PL.Controllers
         public IActionResult Index()
         {
             IEnumerable<Category> modelsList = _categoryRepository.GetAll();
+
             return View(modelsList);
         }
 
@@ -38,13 +39,13 @@ namespace Template_HardwareStore.PL.Controllers
                 _categoryRepository.Add(category);
                 _categoryRepository.Save();
 
-                TempData[WebConstants.Success] = "Category added seccessfully";
+                TempData[WebConstants.Success] = "Category added seccessfully.";
 
                 return RedirectToAction("Index");
             }
             else
             {
-                TempData[WebConstants.Error] = "Error of creating catgory";
+                TempData[WebConstants.Error] = "Error of creating Catgory!";
             }
             return View(category);
         }
@@ -74,7 +75,12 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _categoryRepository.Update(category);
                 _categoryRepository.Save();
+                TempData[WebConstants.Success] = "Category edited seccessfully.";
                 return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData[WebConstants.Error] = "Catgory edited with error!";
             }
             return View(category);
         }
@@ -106,10 +112,13 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 _categoryRepository.Remove(model);
                 _categoryRepository.Save();
+                TempData[WebConstants.Success] = "Category deliteded seccessfully.";
                 return RedirectToAction("Index");
             }
             else
             {
+                TempData[WebConstants.Error] = "Catgory deleted with error!";
+
                 return NotFound();
             }
         }

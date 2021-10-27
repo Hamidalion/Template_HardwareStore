@@ -105,6 +105,15 @@ namespace Template_HardwareStore.PL.Controllers
             }
             ViewBag.TotalPrice = totalPrice;
 
+            if (productUserViewModel != null)
+            {
+                TempData[WebConstants.Success] = "Product loaded seccessfully.";
+            }
+            else
+            {
+                TempData[WebConstants.Error] = "Not Product for load!";
+            }
+
             return View(productUserViewModel);
         }
 
@@ -112,59 +121,68 @@ namespace Template_HardwareStore.PL.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SummaryPostAsync(ProductUserViewModel productUserViewModel)
         {
-            var claimIdentity = (ClaimsIdentity)User.Identity;
-            var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
-
-            var pathToTemplate = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
-                                                   + "templates" + Path.DirectorySeparatorChar.ToString()
-                                                   + "Inquiry.html";
-
-            var subject = "New Inquary";
-            string htmlBody = "";
-
-            using (StreamReader sr = System.IO.File.OpenText(pathToTemplate))
+            try
             {
-                htmlBody = sr.ReadToEnd();
-            }
+                var claimIdentity = (ClaimsIdentity)User.Identity;
+                var claim = claimIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
-            StringBuilder productListSB = new StringBuilder();
+                var pathToTemplate = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                                                       + "templates" + Path.DirectorySeparatorChar.ToString()
+                                                       + "Inquiry.html";
 
-            foreach (var item in ProductUserViewModel.ProductList)
-            {
-                productListSB.Append($" - Name: {item.Name} <span style='font-size: 14px' > (ID: {item.Id}) </span> <br /> ");
-            }
+                var subject = "New Inquary";
+                string htmlBody = "";
 
-            string messageBody = string.Format(htmlBody, productUserViewModel.ApplicationUser.FullName,
-                                                         productUserViewModel.ApplicationUser.Email,
-                                                         productUserViewModel.ApplicationUser.PhoneNumber,
-                                                         productListSB.ToString());
-
-            await _emailSender.SendEmailAsync(ProductUserViewModel.ApplicationUser.Email, subject, messageBody);
-
-            InquiryHeader inquiryHeader = new InquiryHeader()
-            {
-                ApplicationUserId = claim.Value,
-                FullName = productUserViewModel.ApplicationUser.FullName,
-                Email = productUserViewModel.ApplicationUser.Email,
-                PhoneNamber = productUserViewModel.ApplicationUser.PhoneNumber,
-                InquiryDate = DateTime.Now
-            };
-
-            _inquiryHeaderRepository.Add(inquiryHeader);
-            _inquiryHeaderRepository.Save();
-
-            foreach (var product in productUserViewModel.ProductList)
-            {
-                InquiryDetail inquiryDetail = new InquiryDetail()
+                using (StreamReader sr = System.IO.File.OpenText(pathToTemplate))
                 {
-                    InquiryHeaderId = inquiryHeader.Id,
-                    ProductId = product.Id,
+                    htmlBody = sr.ReadToEnd();
+                }
+
+                StringBuilder productListSB = new StringBuilder();
+
+                foreach (var item in ProductUserViewModel.ProductList)
+                {
+                    productListSB.Append($" - Name: {item.Name} <span style='font-size: 14px' > (ID: {item.Id}) </span> <br /> ");
+                }
+
+                string messageBody = string.Format(htmlBody, productUserViewModel.ApplicationUser.FullName,
+                                                             productUserViewModel.ApplicationUser.Email,
+                                                             productUserViewModel.ApplicationUser.PhoneNumber,
+                                                             productListSB.ToString());
+
+                await _emailSender.SendEmailAsync(ProductUserViewModel.ApplicationUser.Email, subject, messageBody);
+
+                InquiryHeader inquiryHeader = new InquiryHeader()
+                {
+                    ApplicationUserId = claim.Value,
+                    FullName = productUserViewModel.ApplicationUser.FullName,
+                    Email = productUserViewModel.ApplicationUser.Email,
+                    PhoneNamber = productUserViewModel.ApplicationUser.PhoneNumber,
+                    InquiryDate = DateTime.Now
                 };
 
-                _inquiryDetailRepository.Add(inquiryDetail);
-            }
+                _inquiryHeaderRepository.Add(inquiryHeader);
+                _inquiryHeaderRepository.Save();
 
-            _inquiryDetailRepository.Save();
+                foreach (var product in productUserViewModel.ProductList)
+                {
+                    InquiryDetail inquiryDetail = new InquiryDetail()
+                    {
+                        InquiryHeaderId = inquiryHeader.Id,
+                        ProductId = product.Id,
+                    };
+
+                    _inquiryDetailRepository.Add(inquiryDetail);
+                }
+
+                _inquiryDetailRepository.Save();
+
+                TempData[WebConstants.Success] = "Order added seccessfully.";
+            }
+            catch (Exception ex)
+            {
+                TempData[WebConstants.Error] = $"Order complete with error {ex}!";
+            }
 
             return RedirectToAction(nameof(InquiryConfirmation));
         }
@@ -178,17 +196,26 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult Remove(int id)
         {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-
-            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
-                && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            try
             {
-                shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+                List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+
+                if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null
+                    && HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+                {
+                    shoppingCartList = HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).ToList();
+                }
+
+                shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId.Equals(id)));
+
+                HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+
+                TempData[WebConstants.Success] = "Order deliteded seccessfully.";
             }
-
-            shoppingCartList.Remove(shoppingCartList.FirstOrDefault(u => u.ProductId.Equals(id)));
-
-            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+            catch (Exception ex)
+            {
+                TempData[WebConstants.Error] = $"Order deleted with error {ex}!";
+            }
 
             return RedirectToAction(nameof(Index));
         }

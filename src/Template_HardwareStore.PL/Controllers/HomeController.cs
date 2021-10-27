@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -89,20 +90,29 @@ namespace Template_HardwareStore.PL.Controllers
 
         public IActionResult RemoveFromCart(int id)
         {
-            List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
-            if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
-                HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+            try
             {
-                shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
-            };
+                List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
+                if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
+                    HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart).Count() > 0)
+                {
+                    shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
+                };
 
-            var itemToRemove = shoppingCartList.SingleOrDefault(u => u.ProductId == id);
-            if (itemToRemove != null)
-            {
-                shoppingCartList.Remove(itemToRemove);
+                var itemToRemove = shoppingCartList.SingleOrDefault(u => u.ProductId == id);
+                if (itemToRemove != null)
+                {
+                    shoppingCartList.Remove(itemToRemove);
+                }
+
+                HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+
+                TempData[WebConstants.Success] = "Product remove from card seccessfully.";
             }
-
-            HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
+            catch (Exception ex)
+            {
+                TempData[WebConstants.Error] = $"Product remove from card with error {ex}!";
+            }
 
             return RedirectToAction(nameof(Index));
         }
