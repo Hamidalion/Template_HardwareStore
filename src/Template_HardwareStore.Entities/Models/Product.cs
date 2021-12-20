@@ -33,6 +33,10 @@ namespace Template_HardwareStore.Entities.Models
 
         [ForeignKey("ApplicationTypeId")]
         public virtual ApplicationType ApplicationType { get; set; }
+
+        [NotMapped] // Not add to DB
+        [Range(1, 10000)] // Validation Range
+        public int TempSqFt { get; set; }
     }
 }
  
