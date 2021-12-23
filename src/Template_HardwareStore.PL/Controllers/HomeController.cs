@@ -73,7 +73,7 @@ namespace Template_HardwareStore.PL.Controllers
         }
 
         [HttpPost, ActionName("AddToCart")]
-        public IActionResult DetailsPost(int id)
+        public IActionResult DetailsPost(int id, DetailViewModel detailViewModel)
         {
             List<ShoppingCart> shoppingCartList = new List<ShoppingCart>();
             if (HttpContext.Session.Get<IEnumerable<ShoppingCart>>(WebConstants.SessionCart) != null &&
@@ -81,7 +81,7 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 shoppingCartList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
             };
-            shoppingCartList.Add(new ShoppingCart { ProductId = id });
+            shoppingCartList.Add(new ShoppingCart { ProductId = id, SqFt = detailViewModel.Product.TempSqFt});
 
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartList);
 

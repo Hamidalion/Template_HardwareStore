@@ -60,7 +60,16 @@ namespace Template_HardwareStore.PL.Controllers
 
             List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
 
-            IEnumerable<Product> prodList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
+            IEnumerable<Product> prodListTemp = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
+            IList<Product> prodList = new List<Product> ();
+
+            foreach (var item in shoppingCartList)
+            {
+                Product productTemp = prodListTemp.FirstOrDefault(u => u.Id == item.ProductId);
+                productTemp.TempSqFt = item.SqFt;
+
+                prodList.Add(productTemp);
+            }
 
             return View(prodList);
         }

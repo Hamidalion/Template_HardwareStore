@@ -157,3 +157,6 @@ Get practice in development MVC asp.net apps.
 
 47. Review backet with product
 48. Add in backet with product count in SqFt
+49. Add count in Session
+50. Remake CardController and get from session count in SqFt and put in new View
+51. Change Cart cshtml representetive and add Total order value

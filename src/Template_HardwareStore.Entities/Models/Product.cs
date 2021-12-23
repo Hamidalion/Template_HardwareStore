@@ -6,6 +6,11 @@ namespace Template_HardwareStore.Entities.Models
 {
     public class Product
     {
+        public Product()
+        {
+            TempSqFt = 1;
+        }
+
         [Key]
         public int Id { get; set; }
 
