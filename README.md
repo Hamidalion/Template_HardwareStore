@@ -160,3 +160,6 @@ Get practice in development MVC asp.net apps.
 49. Add count in Session
 50. Remake CardController and get from session count in SqFt and put in new View
 51. Change Cart cshtml representetive and add Total order value
+52. Create logic when admin changing count SqFt in representetive layer
+53. Crate UpdateCart action in CartController for updatin backet
+54. Fix logic im cshtml replace foreach to for 

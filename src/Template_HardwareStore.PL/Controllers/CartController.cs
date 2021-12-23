@@ -60,8 +60,8 @@ namespace Template_HardwareStore.PL.Controllers
 
             List<int> prodInCart = shoppingCartList.Select(u => u.ProductId).ToList();
 
-            IEnumerable<Product> prodListTemp = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
-            IList<Product> prodList = new List<Product> ();
+            List<Product> prodListTemp = _productRepository.GetAll(u => prodInCart.Contains(u.Id)).ToList();
+            IList<Product> prodList = new List<Product>();
 
             foreach (var item in shoppingCartList)
             {
@@ -225,6 +225,24 @@ namespace Template_HardwareStore.PL.Controllers
             {
                 TempData[WebConstants.Error] = $"Order deleted with error {ex}!";
             }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateCart(List<Product> products)
+        {
+            List<ShoppingCart> shopingCartList = new List<ShoppingCart>();
+
+            foreach (var product in products)
+            {
+                shopingCartList.Add(new ShoppingCart() { 
+                    ProductId = product.Id, 
+                    SqFt = product.TempSqFt });
+            }
+
+            HttpContext.Session.Set(WebConstants.SessionCart, shopingCartList);
 
             return RedirectToAction(nameof(Index));
         }
